@@ -1,0 +1,59 @@
+{% extends "TahwissaBundle:Membre:base.html.twig" %}
+
+{% block title %}
+    Compte
+{% endblock %}
+
+{% block content %}
+    <script>
+        function testmdp()
+        {
+
+            var xhr =  new XMLHttpRequest();
+
+            xhr.open("GET","{{ path('modifier') }}",true);
+            xhr.send();
+            xhr.onreadystatechange = result;
+            function result()
+            {
+                document.getElementById("zone").innerHTML= xhr.responseText;
+            }
+        }
+    </script>
+    <br>
+    <form method="post" onsubmit="return myFunction()" action="{{ path('modifier') }}">
+        <div class="form-group">
+            <br><label id="p"> <h4> {{ message }} </h4> </label>
+            <div id="zonne"></div>
+            <input type="password" class="form-control" id="pwd" name="mdp1"placeholder="Ancien mot De Pass:">
+        </div>
+        <div class="form-group">
+            <label class="hidden"  id="pass">les mot de pass sont incorrect</label>
+            <input type="password" class="form-control" id="pwd1" name="mdp"placeholder="Nouveau mot De Pass:">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="pwd2" name="Mdp2" placeholder="Confirmer Mot De Pass:" >
+        </div>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="testmdp()">
+    </form>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function myFunction() {
+            var pass1 = document.getElementById("pwd1").value;
+            var pass2 = document.getElementById("pwd2").value;
+            var ok = true;
+            if (pass1 != pass2) {
+                //alert("Passwords Do not match");
+                document.getElementById("pass").className = '';
+                document.getElementById("pwd1").style.borderColor = "#E34234";
+                document.getElementById("pwd2").style.borderColor = "#E34234";
+                ok = false;
+            }
+            else {
+                alert("Passwords Match!!!");
+            }
+            return ok;
+        }
+    </script>
+{% endblock %}

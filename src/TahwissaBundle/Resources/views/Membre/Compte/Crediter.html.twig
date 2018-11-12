@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<style>
+    div.centre {
+        position:absolute;
+        left: 50%;
+        top: 50%;
+        width: 200px;
+        height: 200px;
+        margin-left: -100px; /* Cette valeur doit être la moitié négative de la valeur du width */
+        margin-top: -100px; /* Cette valeur doit être la moitié négative de la valeur du height */
+    }
+</style>
+    <div class="container">
+        <center>
+        <h2> Bienvenu dans la page de paiement </h2>
+        </center>
+    </div>
+<div class="container">
+    <div class="centre">
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">S'authentifier</button>
+    </div>
+    <!-- Modal -->
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close dat"a-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"> Paiement </h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="pwd2" name="Mdp2" placeholder="Identifiant:" >
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="pwd2" name="Mdp2" placeholder="Mot de Pass:" >
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="btn btn-default" id="pwd2" name="Mdp2" value="valider" href="{{ path('payer') }}">Valider</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                    <center>
+                        <div>
+                            <i class="fa fa-cc-paypal" style="font-size:48px;color:red"></i>
+                            <i class="fa fa-paypal" style="font-size:48px;color:black"></i>
+                            <i class="fa fa-cc-mastercard" style="font-size:48px;color:red"></i>
+                            <i class="fa fa-cc-visa" style="font-size:48px;color:black"></i>
+                        </div>
+                    </center>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</body>
+

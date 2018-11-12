@@ -1,0 +1,182 @@
+{% extends "@Tahwissa/Admin/base.html.twig" %}
+{% block breadcrumb %}
+    <li>Evènements</li>
+    <li>Demandes d'organisation</li>
+{% endblock %}
+{% block pageTitle %}
+    Demandes d'organisation
+
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/thumbnail-gallery.css') }}"/>
+{% endblock %}
+{% block pageDesc %}
+{% endblock %}
+
+{% block tache %}
+    Détails {{ event }}
+{% endblock %}
+
+
+
+{% block body %}
+    <center>
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">Photos</h1>
+            </div>
+            {% set i=0 %}
+            {% for image in event.photos %}
+                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <a class="thumbnail" href="#">
+                        <img id="{{ i }}" class="img-responsive" data-toggle="modal" data-target="#myModal"
+                             onclick="display(this.id)" src="{{ asset('images/evenements/'~image.chemin) }}" alt="">
+                    </a>
+                </div>
+                {% set i=i+1 %}
+            {% endfor %}
+        </div>
+    </center>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div style="width:900px;height: 600px;" class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Photo</h4>
+                </div>
+
+                <div class="modal-body">
+                    <center>
+                        <img style="height: 600px;width:800px" id="zoom" src=""/>
+                    </center>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalRefus" role="dialog">
+        <div style="width:900px;height: 600px;" class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form method="post" action="{{ path("refuser_event") }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirmation</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        <div class="form-group">
+                            Veuillez indiquer le motif de rejet de la demande:
+                            <textarea required="true" type="textarea" class="form-control" name="motif"></textarea>
+                        </div>
+                        <input value="{{ event.id }}" type="hidden" id="idE" name="idE">
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Envoyer</button>
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">Informations</div>
+
+                <h3 style="margin-left: 5%">Destination :
+                    <small class="text-muted">{{ event.destination }}</small>
+                </h3>
+                <h3 style="margin-left: 5%">Lieu rassemblement :
+                    <small class="text-muted">{{ event.lieuRassemblement }}</small>
+                </h3>
+                <h3 style="margin-left: 5%">Départ :
+                    <small class="text-muted">{{ event.dateHeureDepart|date("D M Y")~" à "~event.dateHeureDepart|date("h:i") }}</small>
+                </h3>
+                <h3 style="margin-left: 5%">Frais :
+                    <small class="text-muted">{{ event.frais }} Dinars</small>
+                </h3>
+                <h3 style="margin-left: 5%">Nombre de places :
+                    <small class="text-muted">{{ event.nombrePlaces }} </small>
+                </h3>
+                {% if event=="Randonnée" %}
+                    <h3 style="margin-left: 5%">Difficulté :
+                        <small class="text-muted">{{ event.difficulte }} </small>
+                    </h3>
+                    <h3 style="margin-left: 5%">Distance parcourue :
+                        <small class="text-muted">{{ event.distanceParcourue }} </small>
+                    </h3>
+                    <h3 style="margin-left: 5%">Type :
+                        <small class="text-muted">{{ event.type }} </small>
+                    </h3>
+                {% else %}
+                    <h3 style="margin-left: 5%">Nombre de jours :
+                        <small class="text-muted">{{ event.duree }} </small>
+                    </h3>
+                {% endif %}
+                <br><br>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">Planning</div>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Description</th>
+                    </thead>
+
+                    {% for c in event.planning %}
+                        <tr>
+                            <td>{{ c.debut|date("d/m/Y H:i") }}</td>
+                            <td>{{ c.fin|date("d/m/Y H:i") }}</td>
+                            <td>{{ c.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">Description</div>
+                <p class="lead" style="margin-left: 5%">
+                    {{ event.description }}
+                </p>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">Réglement</div>
+                <p class="lead" style="margin-left: 5%">
+                    {{ event.reglement }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <center>
+        <a class="btn btn-primary btn-lg" href="{{ path("accepter_event",{"id":event.id}) }}">Valider</a>
+        <a class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalRefus">Rejeter</a>
+    </center>
+{% endblock %}
+
+    {% block javascripts %}
+        <script type="text/javascript">
+            function display(element) {
+                path = $("#" + element).attr("src");
+                $("#zoom").attr("src", path);
+            }
+
+        </script>
+    {% endblock %}

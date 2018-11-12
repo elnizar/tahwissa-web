@@ -1,0 +1,66 @@
+
+{% extends "@Tahwissa/Admin/base.html.twig" %}
+{% block breadcrumb %}
+<li>Signalisation</li>
+<li>Demandes de signalisation</li>
+{% endblock %}
+{% block pageTitle %}
+    Demandes de signalisation
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/thumbnail-gallery.css') }}"/>
+{% endblock %}
+{% block pageDesc %}
+{% endblock %}
+
+{% block tache %}
+    Détails
+{% endblock %}
+{% block body %}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Hover Data Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Email</th>
+                            <th>Adresse</th>
+                            <th>Motif</th>
+                            <td>Bannir</td>
+                        </tr>
+                        </thead>
+                        {% for s in signale %}
+                        <tbody>
+                        <tr>
+                            <td> {{ s.user.nom }} </td>
+                            <td> {{ s.user.Prenom }}</td>
+                            <td>{{ s.user.email }}</td>
+                            <td>{{ s.user.adresse }}</td>
+                            <td>{{ s.motif }}</td>
+                            <td><a href="{{ path("bannir_membre",{"id":s.user.id}) }}"><button type="button" class="btn btn-block btn-primary">Bannir</button></a></td>
+                        </tr>
+                        </tbody>
+                        {% endfor %}
+                        </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,29 @@
+<head>
+    <meta charset="UTF-8"/>
+    <title>Facture de participation à un evenement</title>
+    <link href="{{ asset('assets/Membre/css/facture.css') }}" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+<section class="flex">
+    <dl class="bloc">
+        <dt>Facture Tahwissa</dt>
+        <dd>
+            <dl>
+                <dt>Nom</dt>
+                <dd>{{ app.user.nom}}</dd>
+                <dt>Prenom</dt>
+                <dd>{{ app.user.prenom }}</dd>
+                <dt>Courriel</dt>
+                <dd>{{ app.user.email }}</dd>
+            </dl>
+        </dd>
+    </dl>
+    <dl class="bloc">
+        <dt>Camping à</dt>
+        <dd>{{ participation.evenement.destination }}</dd>
+        <dt>date et heur départ</dt>
+        <dd>{{ participation.evenement.dateHeureDepart |date('d/m/y') }}</dd>
+    </dl>
+</section>
+<a class="btn btn-default" href="{{ path('generate_pdf', {"id":participation.evenement.id }) }}">Générer PDF</a>
+</body>

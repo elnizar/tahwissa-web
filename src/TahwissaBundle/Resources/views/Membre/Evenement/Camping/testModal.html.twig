@@ -1,0 +1,33 @@
+
+
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+{% block content %}
+<br><br><br>
+
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Booster</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Etes vous sur de vouloir booster l'évènement ? Cette opération vous coûtera 20 Dinars</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">Valider</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

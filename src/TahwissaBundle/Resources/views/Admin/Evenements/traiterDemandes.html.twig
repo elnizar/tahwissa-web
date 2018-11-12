@@ -1,0 +1,44 @@
+
+{% extends "@Tahwissa/Admin/base.html.twig" %}
+{% block breadcrumb %}
+    <li>Evènements</li>
+    <li>Demandes d'organisation</li>
+{% endblock %}
+{% block pageTitle %}
+    Toutes les demandes
+{% endblock %}
+
+{% block pageDesc %}
+{% endblock %}
+
+{% block tache %}
+    Demandes d'organisation
+{% endblock %}
+
+
+
+{% block body %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th>Organisateur</th>
+                <th>Guide</th>
+                <th>Type Evenement</th>
+                <th>Date Ajout</th>
+                <th>Details</th>
+            </thead>
+            {% for e in events %}
+                <tr>
+                    <td>{{ e.organisateur.nom~" "~e.organisateur.prenom }}</td>
+                    <td>{% if e.guide==null %}
+                            Non spécifié
+                        {% else %}
+                            {{ e.guide.nom~" "~e.guide.prenom }}
+                        {% endif %}
+                    </td>
+                    <td>{{ e }}</td>
+                    <td>{{ e.dateCreation|date("d/m/Y H:i") }}</td>
+                    <td><a class="btn btn-primary" href="{{ path("details_event_admin",{"id":e.id}) }}">Details</a> </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

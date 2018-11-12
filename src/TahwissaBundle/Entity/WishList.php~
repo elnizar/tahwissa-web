@@ -1,0 +1,122 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Elhraiech Nizar
+ * Date: 2017-02-15
+ * Time: 03:01
+ */
+
+namespace TahwissaBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToMany;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="wishlist")
+ */
+class WishList
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateHeureParticipation", type="datetime")
+     */
+    private $dateAjoutWishList;
+    /**
+     * Many wishlist has many events
+     * @ManyToMany(targetEntity="Evenement")
+     * JoinTable(name="events_wishlist",
+     *      joinColumns={@JoinColumn(name="wishlist_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="events_id", referencedColumnName="id", unique=true)}
+     * )
+     */
+    private $evenement;
+    /**
+     * @ORM\OneToOne(targetEntity="User")
+     */
+    private $user;
+
+    /**
+     * WishList constructor.
+     * @param \DateTime $dateAjoutWishList
+     */
+    public function __construct()
+    {
+        $this->dateAjoutWishList=new \DateTime();
+        $this->evenement = new \Doctrine\Common\Collections\ArrayCollection();
+
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateAjoutWishList()
+    {
+        return $this->dateAjoutWishList;
+    }
+
+    /**
+     * @param \DateTime $dateAjoutWishList
+     */
+    public function setDateAjoutWishList($dateAjoutWishList)
+    {
+        $this->dateAjoutWishList = $dateAjoutWishList;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvenement()
+    {
+        return $this->evenement;
+    }
+
+    /**
+     * @param mixed $evenement
+     */
+    public function setEvenement($evenement)
+    {
+        $this->evenement = $evenement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+
+}

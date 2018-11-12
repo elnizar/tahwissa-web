@@ -1,0 +1,64 @@
+{% extends "TahwissaBundle:Membre:base.html.twig" %}
+
+{% block title %}
+    Profile
+   <br><div class="dropdown" style="float: right; ">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Compte
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            {% if app.user.getCompte == null %}
+            <li><a href="{{ path('compte') }}">S'inscrir</a></li>
+            <li><a href="#">Créditer Compte</a></li>
+            {% else %}
+                        <li><a href="{{ path('crediter') }}">Créditer Compte</a></li>
+                        <li><a href="{{ path('modifier') }}">Modifier compte</a></li>
+                </ul>
+                {% endif %}
+    </div>
+
+
+
+{% endblock %}
+
+{% block content %}
+   <div class="col-sm-4">
+        <br><table>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+           <tr>
+               <td></td>
+               <td><img src="{{ asset('images/profil/' ~ app.user.chemin) }}" style="width: 220px;"></td>
+           </tr>
+            <tr>
+                <td> <span class="glyphicon glyphicon-user">  </span></td>
+                <td> <h3>&nbsp;{{ app.user.nom }}&nbsp;{{ app.user.prenom }}</h3></td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-map-marker"></span></td>
+                <td> <h3>&nbsp;De {{ app.user.adresse }}</h3></td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-envelope"></span></td>
+                <td> <h3>&nbsp;{{ user.email }}</h3></td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-calendar"></span></td>
+                <td> <h3>&nbsp;{{ app.user.dateNaissance |date('Y-m-d') }}</h3></td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-education"></span></td>
+                <td> <h3>&nbsp;{{ app.user.profession}}</h3></td>
+            </tr>
+        </table>
+       <br>
+    </div>
+    <div class="col-sm-4">
+        <form action="{{ path('voir_profil') }}" method="post">
+            <br>
+            <input type="text" placeholder="recherche" name="rechrche" class="form-control" >
+            <button type="submit" class="btn btn-inverse right-rounded" >Chercher</button>
+        </form>
+    </div>
+    {% endblock %}

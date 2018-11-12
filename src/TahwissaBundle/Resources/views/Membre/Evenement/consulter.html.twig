@@ -1,0 +1,170 @@
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+
+{% block title %}
+    Liste des évènements
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("assets/Membre/css/test.css") }}"/>
+
+{% endblock %}
+{% block content %}
+    <br><br>
+    <div id="myCarousel" style="height: 350px;" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            {% set i=0 %}
+            {% for e in boostedEvents %}
+                <li data-target="#myCarousel" data-slide-to="{{ i }}" {% if i==0 %}class="active">{% endif %}</li>
+                {% set i=i+1 %}
+            {% endfor %}
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            {% set i=0 %}
+            {% for e in boostedEvents %}
+                <div style="height: 350px;" class="item {% if i==0 %}active{% endif %}">
+                    <center>
+                        <a href="{% if e=="Randonnée" %} {{ path("details_randonnee",{"id":e.id}) }} {% else %} {{ path("details_camping",{"id":e.id}) }} {% endif %}">
+                            <img src="{{ ('/images/evenements/'~e.photos[0].chemin)|imagine_filter("watermark_filter") }}"
+                                 alt="{{ e.destination }}">
+                        </a>
+                    </center>
+                    <div class="carousel-caption" style="color:black">
+                        <h3>{{ e }} à {{ e.destination }}{% if e=="Camping" %}({{ e.duree }} Jours){% endif %}</h3>
+
+                        <p>{{ e.description }}</p>
+                        <p>Plus que {{ e.nombrePlaces-e.nombrePlacesPrises }} places</p>
+                    </div>
+                </div>
+                {% set i=i+1 %}
+            {% endfor %}
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <br>
+    <form method="get">
+        <div class="input-group">
+            <input name="destination" value="{{ destination }}" type="text" class="form-control"
+                   placeholder="Recherche par destination">
+            <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Go!</button>
+      </span>
+        </div><!-- /input-group -->
+    </form>
+
+    <br><br><br>
+    <div class="row">
+        {% for e in events %}
+            <div class="col-sm-6">
+                <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
+                    <div class="media">
+                        <a class="pull-left" href="#" target="_parent">
+                            <img style="width:500px;height: 300px" alt="image" class="img-responsive"
+                                 src="{{ asset('/images/evenements/'~e.getPhotos()[0].chemin) }}"></a>
+
+                        <div class="clearfix visible-sm"></div>
+
+                        <div class="media-body fnt-smaller">
+                            <a href="#" target="_parent"></a>
+
+                            <h4 class="media-heading">
+                                <a href="#" target="_parent">{{ e.frais }} Dinars
+
+                                </a></h4>
+
+
+                            <ul class="list-inline mrg-0 btm-mrg-10 clr-535353">
+                                <li>{{ e }}</li>
+
+                                <li style="list-style: none">|</li>
+                                <li>Destination : {{ e.destination }}</li>
+
+                                <li style="list-style: none">|</li>
+                                <li>{{ e.dateHeureDepart|date("d M Y H:i") }}</li>
+
+                                <li style="list-style: none">|</li>
+                                {% if e=="Camping" %}
+
+                                    <li>{{ e.duree }} Jours</li>
+                                {% else %}
+                                    <li>
+                                        {% if e.difficulte=="Facile" %}
+                                            <span style="margin-left: 25%" class="badge badge-success">Facile</span>
+                                        {% elseif e.difficulte=="Moyenne" %}
+                                            <span class="badge badge-warning">Moyenne</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Difficile</span>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-warning" role="progressbar"
+                                         style="width:{{ e.nombrePlacesPrises/e.nombrePlaces*100 }}%">
+                                        {{ e.nombrePlacesPrises }}
+                                    </div>
+                                    <div class="progress-bar progress-bar-success" role="progressbar"
+                                         style="width:{{ (e.nombrePlaces-e.nombrePlacesPrises)/e.nombrePlaces*100 }}%">{{ e.nombrePlaces-e.nombrePlacesPrises }}</div>
+                                </div>
+                            </ul>
+
+                            <p class="hidden-xs" style=" white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;">{{ e.description }}</p>
+                            <span class="fnt-smaller fnt-lighter fnt-arial">
+
+                            </span>
+                        </div>
+                        <br>
+                        <div class="pull-right">
+                            <a class="btn btn-primary" href="{{ path("ajout_wishlist",{"id":e.id}) }}"><span
+                                        class="fa fa-heart"></span>
+                                Wishlist</a>
+                            {% if e=="Randonnée" %}
+                                <a class="btn btn-primary" href="{{ path("details_randonnee",{"id":e.id}) }}">Détails
+                                    >></a>
+                            {% else %}
+                                <a class="btn btn-primary" href="{{ path("details_camping",{"id":e.id}) }}">Détails
+                                    >></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- End Listing-->
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+
+    <span class="badge badge-warning">Places Prises</span> <span class="badge badge-success">Places disponibles</span>
+
+    <center>
+
+
+        <nav>
+            <ul class="pagination">
+                <li {% if thisPage==1 %} class="disabled"><a
+                            {% else %}href="{{ path("events_show",{"page":thisPage-1}) }}"
+                            {% endif %}aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                {% for i in 1..maxPages %}
+                    <li><a href='{{ path("events_show",{"page":i,"destination":destination}) }}'>{{ i }}</a></li>
+                {% endfor %}
+                <li {% if thisPage==maxPages %}class="disabled"{% endif %} ><a
+                            {% if thisPage!=maxPages %}href='{{ path("events_show",{"page":thisPage+1}) }}'{% endif %}
+                            aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            </ul>
+        </nav>
+    </center>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+
+{% block title %}
+    Liste des évènements
+{% endblock %}
+
+{% block content %}
+<div id="products" class="row list-group">
+
+    {% for e in wishlist %}
+
+
+        <div class="item  col-xs-4 col-lg-4">
+            <div class="thumbnail">
+                <img class="group list-group-image" src="{{ asset('images/evenements/'~e.evenement.photos[0].chemin) }}" alt="" />
+                <div class="caption">
+                    <h4 class="group inner list-group-item-heading">
+                        {{ e.evenement }}
+
+                        {% if e.evenement =="Randonnée" %}
+                            {{ e.evenement.type }} à {{ e.evenement.destination }}
+                            {% if e.evenement.difficulte=="Facile" %}
+                                <span style="margin-left: 25%" class="badge badge-success">Facile</span>
+                            {% elseif e.evenement.difficulte=="Moyenne" %}
+                                <span class="badge badge-warning">Moyenne</span>
+                            {% else %}
+                                <span class="badge badge-danger">Difficile</span>
+                            {% endif %}
+                        {% else %}
+                            {{ e.evenement.duree }} Jours à "{{ e.evenement.destination }}"
+                        {% endif %}
+                    </h4>
+                    <p class="group inner list-group-item-text">
+                        {{ e.evenement.description }}</p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p class="lead">{{ e.evenement.frais }} Dinars</p>
+
+
+                        </div><br>
+                        <div class="col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{ 5/e.evenement.nombrePlaces*100 }}%">
+                                    {{ e.evenement.nombrePlaces }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-left: 40%" >
+                            <a  href="{{ path("supprimmer_wishlist",{"id":e.evenement.id}) }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                            {% if e.evenement=="Randonnée" %}
+                                <a  class="btn btn-success" href="{{ path("details_randonnee",{"id":e.evenement.id}) }}">Détails >></a>
+                            {% else %}
+                                <a class="btn btn-success" href="{{ path("details_camping",{"id":e.evenement.id}) }}">Détails >></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+<span class="badge badge-warning">Places Prises</span> <span class="badge badge-success">Places disponibles</span>
+{% endblock %}

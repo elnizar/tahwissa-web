@@ -1,0 +1,24 @@
+
+
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+{% block title %}
+    Organiser un évènement
+{% endblock %}
+
+
+{% block content %}
+    <form method="post">
+        <br><br>
+            Veuillez sélectionner le type d'évènement à organiser <br>
+        <div class="radio">
+            <label><input value="c" required="true" type="radio" name="type">Camping</label>
+        </div>
+        <div class="radio">
+            <label><input value="r" required="true" type="radio" name="type">Randonnee</label>
+        </div>
+
+        <input type="submit" class="btn btn-default" value="Poursuivre">
+
+    </form>
+{% endblock %}

@@ -1,0 +1,385 @@
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/Membre/css/autocomplete.css') }}"/>
+{% endblock %}
+{% block title %}
+  Modifier une randonnee
+{% endblock %}
+{% block content %}
+    <br><br>
+    {{ form_errors(form) }}
+    {{ form_start(form) }}
+    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Informations générales</a></li>
+            <li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Images</a></li>
+            <li role="presentation"><a href="#creneau" role="tab" id="creneau-tab" data-toggle="tab" aria-controls="profile">Créneau</a></li>
+            <li role="presentation"><a href="#guide" role="tab" id="guide-tab" data-toggle="tab" aria-controls="profile">Guide</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Type Randonnée : {{ form_widget(form.type) }}
+                        </div>
+                        <div class="form-group">
+                            Difficulté : {{ form_widget(form.difficulte) }}
+                        </div>
+                        <div class="form-group">
+                            Distance parcourue : {{ form_widget(form.distanceParcourue) }}
+                        </div>
+
+                        <div class="form-group">
+                            Frais de participation : {{ form_widget(form.frais) }}
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Destination : {{ form_widget(form.destination) }}
+                        </div>
+                        <div class="form-group">
+                            Lieu rassemblement : {{ form_widget(form.lieuRassemblement) }}
+                        </div>
+                        Date et heure de départ :
+
+                        <div class='input-group date' id='datetimepicker1'>
+                            {{ form_widget(form.dateHeureDepart) }}
+                            <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                 </span>
+                        </div>
+                        <div class="form-group">
+                            Nombre de places : {{ form_widget(form.nombrePlaces) }}
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        Description : {{ form_widget(form.description) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        Règlement : {{ form_widget(form.reglement) }}
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+                <ul class="photos" id="image-fields-list"
+                    data-prototype="{{ form_widget(form.photos.vars.prototype)|e }}">
+                {% for i in photos %}
+                    <img id="{{ i.id }}" src="{{ asset('images/evenements/'~i.chemin) }}" style="width:30%;height:30%">
+                    <a href="#" onclick="deleteImageAjax({{ i.id }})">Supprimer</a>
+                {% endfor %}
+                {% for imageField in form.photos %}
+                    <li>{{ form_widget(imageField) }}</li>
+                {% endfor %}
+                </ul>
+                <a href="#" id="add-photo">Ajouter une autre photo</a>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="creneau" aria-labelledby="creneau-tab">
+                <table class="planning table table-bordered table-striped" id="planning"  data-prototype="  {% filter escape %}
+             {{ include('@Tahwissa/Membre/Evenement/Randonnee/planningPrototype.html.twig', { 'form': (form.planning.vars.prototype)|e }) }}
+         {% endfilter %}">
+                    <thead>
+                        <th>Debut</th>
+                        <th>Fin</th>
+                        <th>Description</th>
+                        <th>Supprimer</th>
+                    </thead>
+                    {% for c in planning %}
+                        <tr class="ignore" id="c{{ c.id }}">
+                        <td>{{ c.debut|date("d M y H:i:s") }}</td>
+                        <td>{{ c.fin|date("d M y H:i:s") }}</td>
+                        <td>{{ c.description }}</td>
+                        <td> <a class="glyphicon glyphicon-remove" onclick="deleteCreneauAjax({{ c.id }})">Supprimer ce créneau </a></td>
+                        </tr>
+                    {% endfor %}
+                   {% for creneau in form.planning  %}
+                       <td><div class='input-group date' id='datetimepicker1'>
+                               {{ form_widget(creneau.debut) }}
+                               <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                           </div>
+                       <td><div class='input-group date' id='datetimepicker1'>
+                               {{ form_widget(creneau.fin) }}
+                               <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                           </div></td>
+                       <td>{{ form_widget(creneau.description) }}</td>
+
+
+                    {% endfor %}
+
+                </table>
+                <a href="#" id="add-creneau">Ajouter une entrée</a>
+                {{ form_widget(form.Ajouter) }}
+            </div>
+
+
+            <div role="tabpanel" class="tab-pane fade" id="guide" aria-labelledby="guide-tab">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class='form-group'>
+                            <div class='col-sm-11'>
+                                <div class="form-group string required search_field">
+
+                                    <input placeholder="Email du guide" class="string required form-control" type="text" name="search_field" id="myAutoComplete" />
+                                </div>
+                                <div style="display: none;" class="form-group string selected_id">
+                                    <label class="string required control-label" for="search_field">Selected ID</label>
+                                    <input class="form-control" type="text" name="guide_id" style="width:250px" id="selected_id" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-primary" onclick="addGuide({{ id_randonnee }})" >Ajouter</a>
+                    </div>
+                </div>
+                <br><br><br><br><br><br><br>
+            </div>
+
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function addGuide(idC) {
+            var path= "{{ path('addGuide',{'id_e':"PLACEHOLDER1","id_g":"PLACEHOLDER2"}) }}"
+            path= path.replace("PLACEHOLDER1", idC);
+            path= path.replace("PLACEHOLDER2", $("#myAutoComplete").val());
+            location.replace(path);
+        }
+    </script>
+    <script>
+        $.widget('custom.tableAutocomplete', $.ui.autocomplete, {
+            options: {
+                open: function (event, ui) {
+                    // Hack to prevent a 'menufocus' error when doing sequential searches using only the keyboard
+                    $('.ui-autocomplete .ui-menu-item:first').trigger('mouseover');
+                },
+                focus: function (event, ui) {
+                    event.preventDefault();
+                }
+            },
+            _create: function () {
+                this._super();
+                // Using a table makes the autocomplete forget how to menu.
+                // With this we can skip the header row and navigate again via keyboard.
+                this.widget().menu("option", "items", ".ui-menu-item");
+            },
+            _renderMenu: function (ul, items) {
+                var self = this;
+                var $table = $('<table style="width:50%;height:20%" class="table table-bordered table-striped">'),
+                    $thead = $('<thead>'),
+                    $headerRow = $('<tr>'),
+                    $tbody = $('<tbody>');
+
+                $.each(self.options.columns, function (index, columnMapping) {
+                    $('<th>').text(columnMapping.title).appendTo($headerRow);
+                });
+
+                $thead.append($headerRow);
+                $table.append($thead);
+                $table.append($tbody);
+
+                ul.html($table);
+
+                $.each(items, function (index, item) {
+                    self._renderItemData(ul, ul.find("table tbody"), item);
+                });
+            },
+            _renderItemData: function (ul, table, item) {
+                return this._renderItem(table, item).data("ui-autocomplete-item", item);
+            },
+            _renderItem: function (table, item) {
+                var self = this;
+                var $tr = $('<tr class="ui-menu-item" role="presentation">');
+
+                $.each(self.options.columns, function (index, columnMapping) {
+                    var cellContent = !item[columnMapping.field] ? '' : item[columnMapping.field];
+                    $('<td>').text(cellContent).appendTo($tr);
+                });
+
+                return $tr.appendTo(table);
+            }
+        });
+        $(function () {
+
+            var routeShow = "{{ path('user_autocomplete', { 'id': 'PLACEHOLDER' }) }}"
+            routeShow=routeShow.replace("PLACEHOLDER", $("#myAutoComplete").val());
+
+            $("#myAutoComplete").tableAutocomplete({
+
+                source:routeShow,
+                columns: [{
+                    field: 'nom',
+                    title: 'Name'
+                }, {
+                    field: 'email',
+                    title: 'E-mail'
+                }, {
+                    field: 'adresse',
+                    title: 'Adresse'
+                }],
+                delay: 500,
+                select: function (event, ui) {
+                    if (ui.item != undefined) {
+                        $(this).val(ui.item.email);
+                        $('#selected_id').val(ui.item.email);
+                    }
+                    return false;
+                }
+            });
+        });
+
+
+    </script>
+    <script type="text/javascript">
+
+        function deleteImageAjax(id){
+
+            var route = "{{ path('delete_image', { 'id': "PLACEHOLDER" }) }}";
+            route=route.replace("PLACEHOLDER", id);
+            $.ajax({
+                url: route,
+                type:"POST",
+                success: function(data){
+                    //alert(data);
+                    $("#"+data).remove();
+                }
+            })
+        }
+        function deleteCreneauAjax(id){
+
+            var route = "{{ path('delete_creneau', { 'id': "PLACEHOLDER" }) }}";
+            route=route.replace("PLACEHOLDER", id);
+            $.ajax({
+                url: route,
+                type:"POST",
+                success: function(data){
+                    //alert(data);
+                    $("#c"+data).remove();
+                }
+            })
+        }
+
+        //$(".datetimepickerdepart").datetimepicker();
+
+        var year= {{ randonnee.dateHeureDepart|date("Y") }};
+        var month= {{ randonnee.dateHeureDepart|date("m") }}-1;
+        var day= {{ randonnee.dateHeureDepart|date("d") }};
+        var hours= {{ randonnee.dateHeureDepart|date("H") }};
+        var seconds = 0;
+        //alert(hours);
+        var date= new Date(year,month,day,hours,seconds,0);
+        //alert(date);
+        $("#tahwissabundle_randonnee_dateHeureDepart").datetimepicker();
+        $('#tahwissabundle_randonnee_dateHeureDepart').data("DateTimePicker").date(moment(date).format('MM/DD/YYYY HH:mm'));
+
+        // keep track of how many email fields have been rendered
+        var imageCount = '{{ form.photos|length }}';
+        var creneauCount= '{{ form.planning|length }}';
+        function addPhotoFormDeleteLink($photoFormLi) {
+            var $removeFormA = $('<a href="#">Supprimer photo</a>');
+            $photoFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                if (imageCount!=1) {
+                    $photoFormLi.remove();
+                    imageCount--;
+                }
+            });
+        }
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of photos
+            $collectionHolder = $('ul.photos');
+
+            // add a delete link to all of the existing photo form li elements
+            $collectionHolder.find('li').each(function() {
+                addPhotoFormDeleteLink($(this));
+            });
+            $collectionHolder2 = $('table.planning');
+            var i=0;
+            $collectionHolder2.find('tr').each(function() {
+               // alert($(this).attr("class"))
+                if ((i!=0) && ($(this).attr("class")!="ignore"))
+                    addCreneauFormDeleteLink($(this));
+                i++;
+            });
+
+
+            jQuery('#add-photo').click(function(e) {
+                e.preventDefault();
+
+                var imageList = jQuery('#image-fields-list');
+
+                // grab the prototype template
+                var newWidget = imageList.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__/g, imageCount);
+                imageCount++;
+
+                // create a new list element and add it to the list
+                var newLi = jQuery('<li></li>').html(newWidget);
+                newLi.appendTo(imageList);
+
+                addPhotoFormDeleteLink(newLi);
+            });
+            jQuery('#add-creneau').click(function(e) {
+                e.preventDefault();
+
+                var planning = jQuery('#planning');
+
+                // grab the prototype template
+                var newWidget = planning.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__/g, creneauCount);
+                creneauCount++;
+
+                // create a new list element and add it to the list
+                var newLi = jQuery('<tr></tr>').html(newWidget);
+                //console.warn(newWidget);
+                newLi.appendTo(planning);
+
+                addCreneauFormDeleteLink(newLi);
+                $(".datetimepicker").datetimepicker();
+            });
+            function addCreneauFormDeleteLink($creneauFormLi) {
+                var $removeFormA = $('<td> <a class="glyphicon glyphicon-remove" href="#">Supprimer ce créneau </a></td>');
+                $creneauFormLi.append($removeFormA);
+
+                $removeFormA.on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    if (creneauCount!=1){
+                        // remove the li for the creneau form
+                        $creneauFormLi.remove();
+                        creneauCount--;
+                    }
+                });
+            }
+        })
+    </script>
+{% endblock %}

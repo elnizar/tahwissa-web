@@ -1,0 +1,218 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Globe Trotting a Travel Agency Category Flat Bootstrap Responsive Website Template | Short Codes :: w3layouts</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Globe Trotting Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="{{ asset('assets/Membre/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('assets/Membre/css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
+	<link href="{{ asset('assets/Membre/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" media="all" />
+<!-- js -->
+
+	<script src="{{ asset('assets/Membre/js/jquery-1.11.1.min.js') }}"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" ></script>
+
+	<!-- //js -->
+<link href='{{ asset('assets/Membre/fonts/font1.css') }}' rel='stylesheet' type='text/css'>
+<link href='{{ asset('assets/Membre/fonts/font2.css') }}' rel='stylesheet' type='text/css'>
+<link href='{{ asset('assets/Membre/css/bootstrap-datepicker.min.css') }}' rel='stylesheet' type='text/css'>
+<link href='{{ asset('assets/Membre/css/rating.css') }}' rel='stylesheet' type='text/css'>
+<link href='{{ asset('assets/Membre/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}' rel='stylesheet' type='text/css'>
+{% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+<!-- banner -->
+	<div class="banner1">
+		<div class="container">
+			<div class="logo">
+				<a href="index.html"></a>
+			</div>
+			<nav class="navbar navbar-default">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+					<nav class="stroke">
+						<ul class="nav navbar-nav">
+							<li><a href="index.html">Accueil</a></li>
+							<li class="dropdown" >
+
+                                    <a class="dropdown-toggle" data-toggle="dropdown">Boutique
+                                        <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Consulter la boutique</a></li> <br>
+                                        <li><a href="#">Vendre un article</a></li><br>
+                                        <li><a href="#">Ma liste d'achats</a></li>
+                                    </ul>
+
+                            </li>
+                            <li class="dropdown" >
+
+                                <a class="dropdown-toggle" data-toggle="dropdown">Evenements
+                                    <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ path("events_show",{"page":1}) }}">Consulter</a></li> <br>
+                                    <li><a href="{{ path("organiser_event") }}">Organiser</a></li><br>
+                                    <li><a href="{{ path("myEvents") }}">Mes évènements</a></li>
+									<li><a href="{{ path("affiche_wishlist") }}">WishList</a></li>
+
+								</ul>
+
+                            </li>
+                            <li class="dropdown" >
+
+                                <a  class="dropdown-toggle" data-toggle="dropdown">Publications
+                                    <span class="caret"></span></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="#">Consulter</a></li> <br>
+                                    <li><a href="#">Partager</a></li><br>
+                                    <li><a href="#">Mes publications</a></li>
+                                </ul>
+
+                            </li>
+							<li class="dropdown" >
+							{% if user == null %}
+								<a  class="dropdown-toggle" data-toggle="dropdown">Espace membre
+									<span class="caret"></span></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="#">Se connecter</a></li> <br>
+									<li><a href="#">S'inscrire</a></li><br>
+
+								</ul>
+							{% else %}
+								<a  class="dropdown-toggle" data-toggle="dropdown">{{ app.user.email }}
+									<span class="caret"></span></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="{{ path("voir_profil") }}">Profil</a></li> <br>
+									<li><a href="{{ path("fos_user_security_logout") }}">Déconnexion</a></li><br>
+
+								</ul>
+							{% endif %}
+							</li>
+
+						</ul>
+					</nav>
+				</div>
+				<!-- /.navbar-collapse -->
+			</nav>
+		</div>
+	</div>
+<!-- banner -->
+<!--typography-page -->
+	<div class="typo">
+		<div class="container">
+			<h1 class="title">{% block title %}{% endblock %}</h1>
+			<p class="iusto">{% block content %}{% endblock %}</p>
+
+
+
+
+
+
+
+		</div>
+	</div>
+<!-- //typography-page -->
+<!-- contact-us -->
+	<div class="contact-us">
+		<div class="container">
+			<h3>Contact Us</h3>
+			<div class="contact-us-grids">
+				<div class="col-md-4 contact-us-grid">
+					<i class="glyphicon glyphicon-flag" aria-hidden="true"></i>
+					<h4>A propos de nous</h4>
+					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
+						ab illo inventore veritatis et quasi architecto.</p>
+				</div>
+				<div class="col-md-3 contact-us-grid">
+					<i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
+					<h4>Address</h4>
+					<p>Modo Center Address<span>+1(999)-908-0000</span>
+						123 Newyork City USA.<span>Support to: <a href="mailto:info@example.com">info@example.com</a></span></p>
+				</div>
+				<div class="col-md-5 contact-us-grid">
+					<i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
+					<h4>Get In Touch</h4>
+					<form>
+						<input type="text" value="Your Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Name';}" required="">
+						<input type="email" value="Your Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Email';}" required="">
+						<textarea type="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message...';}" required="">Message...</textarea>
+						<input type="submit" value="Subscribe" >
+					</form>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!-- //contact-us -->
+<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="footer-bottom-left">
+				<p>&copy 2016 Globe Trotting. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts.</a></p>
+			</div>
+			<div class="footer-bottom-right">
+				<ul>
+					<li><a href="#" class="icon-button twitter"><i class="icon-twitter"></i><span></span></a></li>
+					<li><a href="#" class="icon-button google"><i class="icon-google"></i><span></span></a></li>
+					<li><a href="#" class="icon-button v"><i class="icon-v"></i><span></span></a></li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+<!-- //footer -->
+<!-- scroll_top_btn -->
+		<script type="text/javascript" src="{{ asset('assets/Membre/js/moment.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('assets/Membre/js/bootstrap-datetimepicker.js') }}"></script>
+
+		<script type="text/javascript" src="{{ asset('assets/Membre/js/move-top.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('assets/Membre/js/easing.js') }}"></script>
+	    <script type="text/javascript">
+			$(document).ready(function() {
+
+				var defaults = {
+		  			containerID: 'toTop', // fading element id
+					containerHoverID: 'toTopHover', // fading element hover id
+					scrollSpeed: 1200,
+					easingType: 'linear'
+		 		};
+
+
+				$().UItoTop({ easingType: 'easeOutQuart' });
+
+			});
+		</script>
+		 <a href="#" id="toTop" style="display: block;"><span id="toTopHover" style="opacity: 1;"></span></a>
+<!--end scroll_top_btn -->
+<!-- for bootstrap working -->
+	<script src="{{ asset('assets/Membre/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('assets/Membre/js/rating.js') }}"></script>
+	<script src="{{ asset('assets/Membre/js/bootstrap-datepicker.js') }}"></script>
+	{% block javascripts %}
+	{% endblock %}
+<!-- //for bootstrap working -->
+</body>
+</html>

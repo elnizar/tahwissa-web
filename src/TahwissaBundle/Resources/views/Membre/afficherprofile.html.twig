@@ -1,0 +1,26 @@
+{% extends "TahwissaBundle:Membre:base.html.twig" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    {% for u in utilisateur %}
+        <table>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td> <span class="glyphicon glyphicon-user">  </span></td>
+            <td> <h3>&nbsp;{{ u.nom }}&nbsp;{{ u.prenom }}</h3></td>
+        <tr>
+            <td><span class="glyphicon glyphicon-envelope"></span></td>
+            <td> <h3>&nbsp;{{ u.email }}</h3></td>
+        </tr>
+            <tr>
+               <td> <a href="{{ path('rech_membre', {"id":u.id }) }}"><button type="button" class="btn btn-default" >Accéder</button></a></td>
+            </tr>
+        </table>
+        {% endfor %}
+{% endblock %}

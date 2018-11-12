@@ -1,0 +1,173 @@
+
+
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+{% block title %}
+    Mes évènements
+{% endblock %}
+
+
+{% block content %}
+
+        <br><br>
+        Type d'évènement <br>
+        <div class="radio">
+            <label><input id="c" required="true" type="radio" name="type">Camping</label>
+        </div>
+        <div class="radio">
+            <label><input id="r" required="true" type="radio" name="type">Randonnee</label>
+        </div>
+
+        <div id="result">
+
+        </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Etes vous sur de vouloir booster l'évènement ? Cette opération vous coûtera 20 Dinars</p>
+                </div>
+                <div class="modal-footer">
+                    <button  href="" type="button" class="btn btn-default"><a style="color:black" href="#" id="link">Valider</a></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        function boostClicked(id){
+            var routeBoost = '{{ path("boost",{"id_event":"PLACEHOLDER"}) }}';
+            routeBoost=routeBoost.replace("PLACEHOLDER", id);
+            $("#link").attr("href",routeBoost);
+        }
+    $(document).ready(function(){
+        $("#c").click(function(){
+
+            $.ajax({
+                url: "{{ path("mes_campings") }}",
+                type:"POST",
+                success: function(data){
+                    a=
+                        "<table class='table table-bordered table-striped'>" +
+                        "   <thead>" +
+                        "       <th> Date Creation </th>"+
+                        "       <th> Destination </th>"+
+                        "       <th> Nombre de places </th>"+
+                        "       <th> Statut </th> " +
+                        "       <th> Consulter </th>" +
+                        "       <th> Supprimer </th>"+
+                        "       <th>Modifier</th>"+
+                        "       <th> Booster </th>"
+                        "   </thead>"
+                    ;
+
+                    results = ($.parseJSON(data));
+                    for (var i=0;i<results.length;i++){
+                        if (results[i]["canBeBoosted"]==true){
+                            var boostButton= '<button onclick="boostClicked('+results[i]["id"]+')" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Booster</button>';
+                        }else{
+                            var boostButton= '<button type="button" class="btn btn-info disabled" >Booster</button>';
+                        }
+
+                        var routeShow = "{{ path('details_camping', { 'id': "PLACEHOLDER" }) }}";
+                        routeShow=routeShow.replace("PLACEHOLDER", results[i]["id"]);
+                        var routeDelete= "{{ path('supprimer_camping', { 'id': "PLACEHOLDER" }) }}";
+                        routeDelete=routeDelete.replace("PLACEHOLDER", results[i]["id"]);
+                        var routeUpdate='{{ path("modifier_camping",{"id":"PLACEHOLDER"}) }}';
+                        routeUpdate=routeUpdate.replace("PLACEHOLDER", results[i]["id"]);
+                        if ((results[i]["statut"]=="En attente") || (results[i]["statut"]=="Refusé")){
+                            deleteButton= "<td><button class='btn btn-warning '><a style='color:white' href='"+routeDelete+"'>Supprimer</a></button></td>";
+                            updateButton="<td><button class='btn btn-primary '><a style='color:white' href='"+routeUpdate+"'>Modifier</a></button></td>"
+                        }else{
+                            deleteButton="<td><button class='btn btn-warning disabled'><a style='color:white' href='#'>Supprimer</a></button></td>";
+                            updateButton="<td><button class='btn btn-primary disabled '><a style='color:white'>Modifier</a></button></td>";
+                        }
+                        a+=
+                            "<tr>" +
+                            "     <td>"+results[i]["dateCreation"]+"</td>" +
+                            "     <td>"+results[i]["destination"]+"</td>" +
+                            "     <td>"+results[i]["nombre_places"]+"</td>" +
+                            "     <td>"+results[i]["statut"]+"</td>" +
+                            "     <td> <button class='btn btn-default'><a href='"+routeShow+"'>Consulter</a></button>"+
+                            deleteButton+updateButton+"<td>"+boostButton+"</td>"
+                            "</tr>";
+                    }
+                    a+="</table>"
+                    $("#result").html(a);
+
+
+                }
+            })
+        });
+
+        $("#r").click(function(){
+            $.ajax({
+                url: "{{ path("mes_randonnees") }}",
+                type:"POST",
+                success: function(data){
+                    a=
+                        "<table class='table table-bordered table-striped'>" +
+                        "   <thead>" +
+                        "       <th> Date Creation </th>"+
+                        "       <th> Destination </th>"+
+                        "       <th> Nombre de places </th>"+
+                        "       <th> Statut </th> "+
+                        "       <th> Consulter </th>" +
+                        "       <th> Supprimer </th>"+
+                        "       <th> Modifier </th>"+
+                            "   <th> Booster </th> "+
+                        "   </thead>"
+                        ;
+                  results = ($.parseJSON(data));
+                  for (var i=0;i<results.length;i++){
+                      if (results[i]["canBeBoosted"]==true){
+                          var boostButton= '<button onclick="boostClicked('+results[i]["id"]+')" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Booster</button>';
+                      }else{
+                          var boostButton= '<button type="button" class="btn btn-info disabled" >Booster</button>';
+                      }
+                      var routeShow = "{{ path('details_randonnee', { 'id': "PLACEHOLDER" }) }}";
+                      routeShow=routeShow.replace("PLACEHOLDER", results[i]["id"]);
+                      var routeDelete= "{{ path('supprimer_randonnee', { 'id': "PLACEHOLDER" }) }}";
+                      routeDelete=routeDelete.replace("PLACEHOLDER", results[i]["id"]);
+                      var routeUpdate='{{ path("modifier_randonnee",{"id":"PLACEHOLDER"}) }}';
+                      routeUpdate=routeUpdate.replace("PLACEHOLDER", results[i]["id"]);
+                      if ((results[i]["statut"]=="En attente") || (results[i]["statut"]=="Refusé")){
+                          deleteButton= "<td><button class='btn btn-warning '><a style='color:white' href='"+routeDelete+"'>Supprimer</a></button></td>";
+                          updateButton="<td><button class='btn btn-primary '><a style='color:white' href='"+routeUpdate+"'>Modifier</a></button></td>";
+                      }
+                      else{
+                          deleteButton="<td><button class='btn btn-warning disabled'><a style='color:white' href='#'>Supprimer</a></button></td>";
+                          updateButton="<td><button class='btn btn-primary disabled'><a style='color:white'>Modifier</a></button></td>"
+                      }
+                      a+=
+                          "<tr>" +
+                          "     <td>"+results[i]["dateCreation"]+"</td>" +
+                          "     <td>"+results[i]["destination"]+"</td>" +
+                          "     <td>"+results[i]["nombre_places"]+"</td>" +
+                          "     <td>"+results[i]["statut"]+"</td>" +
+                          "     <td> <button class='btn btn-default'><a  href='"+routeShow+"'>Consulter</a></button>"+
+                         deleteButton+updateButton+"<td>"+boostButton+"</td>"+
+                          "</tr>";
+                  }
+                  a+="</table>"
+                    $("#result").html(a);
+
+
+                }
+            })
+        })
+
+    })
+    </script>
+{% endblock %}

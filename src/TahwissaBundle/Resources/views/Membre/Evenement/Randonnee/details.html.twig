@@ -1,0 +1,260 @@
+{% extends "@Tahwissa/Membre/base.html.twig" %}
+
+{% block title %}
+    Détails de la randonnee
+{% endblock %}
+{% block content %}
+    <br><br>
+    <center>
+        <div class="form-group">
+            Difficulte :
+            {% if randonnee.difficulte=="Facile" %}
+                <span class="badge badge-success">Facile</span>
+            {% elseif randonne.difficulte=="Moyenne" %}
+                <span class="badge badge-warning">Moyenne</span>
+            {% else %}
+                <span class="badge badge-danger">Difficile</span>
+            {% endif %}
+        </div>
+    </center>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            {% set i=0 %}
+
+            {% for photo in randonnee.photos %}
+                <li data-target="#myCarousel" data-slide-to="{{ i }}"
+                        {% if i==0 %}
+                    class="active"
+                        {% endif %}></li>
+
+                {% set i=i+1 %}
+            {% endfor %}
+
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            {% set i=0 %}
+            {% for photo in randonnee.photos %}
+                <div class="item  {% if i==0 %} active{% endif %}">
+                    <center><img src="{{ ('/images/evenements/'~photo.chemin)|imagine_filter("dim_down") }}"/></center>
+                </div>
+                {% set i=i+1 %}
+            {% endfor %}
+
+
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab"
+                                                      aria-controls="home" aria-expanded="true">Informations
+                    générales</a></li>
+
+            <li role="presentation"><a href="#creneau" role="tab" id="creneau-tab" data-toggle="tab"
+                                       aria-controls="profile">Planning</a></li>
+
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <div class="form-group">
+                            Frais de participation :
+                            <div class="form-control">{{ randonnee.frais }} TND</div>
+
+                        </div>
+                        <div class="form-group">
+                            Type :
+                            <div class="form-control">{{ randonnee.type }}  </div>
+
+                        </div>
+                        <div class='form-group'>
+                            Date et heure de départ :
+                            <div class="form-control">{{ randonnee.dateHeureDepart|date("d M y H:i:s") }}</div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Destination :
+                            <div class="form-control">{{ randonnee.destination }}</div>
+                        </div>
+                        <div class="form-group">
+                            Distance parcourue :
+                            <div class="form-control">{{ randonnee.distanceParcourue }}  </div>
+
+                        </div>
+                        <div class="form-group">
+                            Lieu rassemblement :
+                            <div class="form-control">{{ randonnee.lieuRassemblement }} </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar"
+                         style="width:{{ randonnee.nombrePlacesPrises/randonnee.nombrePlaces*100 }}%">
+                        {{ randonnee.nombrePlacesPrises }} places prises!
+                    </div>
+                    <div class="progress-bar progress-bar-success" role="progressbar"
+                         style="width:{{ (randonnee.nombrePlaces-randonnee.nombrePlacesPrises)/randonnee.nombrePlaces*100 }}%">
+                        {{ randonnee.nombrePlaces-randonnee.nombrePlacesPrises }} places disponibles!
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        Description :
+                        <div class="form-control">{{ randonnee.description }} </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        Règlement :
+                        <div class="form-control">{{ randonnee.reglement }} </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="creneau" aria-labelledby="creneau-tab">
+                <table class="planning table table-bordered table-striped" id="planning">
+
+                    <thead>
+                    <th>Debut</th>
+                    <th>Fin</th>
+                    <th>Description</th>
+
+                    </thead>
+                    {% for c in randonnee.planning %}
+                        <tr>
+                            <td>{{ c.debut|date("d M y H:i:s") }}</td>
+                            <td>{{ c.fin|date("d M y H:i:s") }}</td>
+                            <td>{{ c.description }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+
+            </div>
+            <center>
+
+                <div width="50%" class="container-fluid well span6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row-fluid">
+                                <div class="span2">
+                                    <img src="{{ asset('images/user.png') }}" style="width:10%;height:10%"
+                                         class="img-circle">
+                                </div>
+
+                                <div class="span8">
+                                    <h3>A propos de l'organistaeur</h3>
+                                    <h6>Nom : {{ randonnee.organisateur.nom }}</h6>
+                                    <h6>Prenom : {{ randonnee.organisateur.prenom }}</h6>
+                                    <h6>Email : {{ randonnee.organisateur.email }}</h6>
+
+                                </div>
+                                <br>
+                                <div class="span2">
+                                    <div class="btn-group">
+                                        <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                                            Action
+                                            <span class="icon-cog icon-white"></span><span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+
+                                            <li><a href="#"><span class="icon-trash"></span> Profil</a></li>
+                                            <li><a href="#"><span class="icon-wrench"></span> Contacter</a></li>
+                                            <li><a href="#"><span class="icon-wrench"></span> Signaler</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if randonnee.guide!=null %}
+                        <div class="col-md-6">
+                            <div class="row-fluid">
+                                <div class="span2">
+                                    <img src="{{ asset('images/user.png') }}" style="width:10%;height:10%"
+                                         class="img-circle">
+                                </div>
+
+                                <div class="span8">
+                                    <h3>A propos du guide </h3>
+                                    <h6>Nom : {{ randonnee.guide.nom }}</h6>
+                                    <h6>Prenom : {{ randonnee.guide.prenom }}</h6>
+                                    <h6>Email : {{ randonnee.guide.email }}</h6>
+
+                                </div>
+                                <br>
+                                <div class="span2">
+                                    <div class="btn-group">
+                                        <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                                            Action
+                                            <span class="icon-cog icon-white"></span><span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+
+                                            <li><a href="#"><span class="icon-trash"></span> Profil</a></li>
+                                            <li><a href="#"><span class="icon-wrench"></span> Contacter</a></li>
+                                            <li><a href="#"><span class="icon-wrench"></span> Signaler</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </center>
+            {% if randonnee.expired==true %}
+            {% if randonnee.nombrePlaces-randonnee.nombrePlacesPrises!=0 %}
+                <center>
+                    <a href="{{ path('part_event', {"id":randonnee.id }) }}"><button class="btn btn-success">Réservez une place dès maintenant !</button></a>                </center>
+            {% else %}
+                <center>
+                    <button class="btn btn-success disabled">Réservez une place dès maintenant !</button>
+                </center>
+            {% endif %}
+            {% else %}
+            <center>
+                {% if hasParticipated==true %}
+
+                    {{ form_start(rating) }}
+                    {{ form_widget(rating.value) }}
+                    {{ form_widget(rating.Evaluer) }}
+                    {{ form_end(rating) }}
+
+                {% else %}
+                    {{ randonnee.rating|rating }}
+
+                {% endif %}
+                Note : {{ randonnee.rating }} / 5 ({{ randonnee.nombreRates }} votes)
+                {% endif %}
+
+            </center>
+
+        </div>
+        <br><br>
+
+    </div>
+
+{% endblock %}
+
